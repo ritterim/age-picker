@@ -70,6 +70,13 @@ Our use cases dictate collecting the month and day from the user. However, other
 
 Currently supports [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) using English language only. Additional languages can be supported by overriding the `i18n` configuration.
 
+## Development
+
+- `npm install`
+- `npm run build` or `npm run watch`, then open `demo/index.html` in a browser.
+- `npm test` to run tests
+- `npm run lint` to run linter
+
 ## License
 
 MIT
