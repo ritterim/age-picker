@@ -4,6 +4,10 @@ Enhance `input` tags for collecting age with optional date selection, triggered 
 
 All age picker DOM assets will be wrapped everything inside container `div`s, including existing `input` tags. Initially invisible `select` tags will be added for choosing month and day. These dropdowns will occupy space while hidden to avoid UI related reshuffling.
 
+## Example
+
+![Example](example.png)
+
 ## Installation
 
 TODO
