@@ -125,7 +125,7 @@ test('create should hide non-applicable days when month selected', t => {
   t.is([...daySelect.options].filter(x => x.value && !x.hidden).length, 30);
 });
 
-test('create should hide non-applicable months when day selected', t => {
+test('create should disable non-applicable months when day selected', t => {
   new AgePicker().create(element);
 
   const daySelect = document.body.querySelector('.age-picker-day');
