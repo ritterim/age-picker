@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Age Picker Demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link rel="stylesheet" href="site.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="age">Age or Birth Year</label>
+              <input id="age" name="age" class="form-control" type="text" data-age-picker />
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row result-row">
+        <div class="col-md-6">
+          age-value: <span id="result"></span>
+        </div>
+      </div>
+    </div>
+    <script src="../lib/age-picker.js"></script>
+    <script src="demo.js"></script>
+  </body>
+</html>

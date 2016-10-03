@@ -2,7 +2,7 @@
   "name": "age-picker",
   "version": "0.0.0",
   "description": "Enhance `input[text=\"text\"]` tags for collecting age with optional date selection, triggered by entering a year.",
-  "bin": "lib/index.js",
+  "bin": "lib/age-picker.js",
   "files": [
     "lib/"
   ],
@@ -17,14 +17,15 @@
   },
   "scripts": {
     "audit": "nsp check package",
-    "build": "babel src -d lib",
+    "build": "webpack -d",
     "check": "npm run audit && npm outdated --depth 0",
     "coverage": "nyc --all --require babel-core/register --reporter=lcov --reporter=text --reporter=html ava",
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "eslint src test",
     "test": "ava",
     "validate": "npm run lint && npm test",
-    "prepare": "npm run build && npm run validate && npm run check"
+    "prepare": "npm run build && npm run validate && npm run check",
+    "watch": "webpack -d --watch"
   },
   "ava": {
     "require": [
@@ -42,14 +43,16 @@
   },
   "devDependencies": {
     "ava": "^0.16.0",
-    "babel-cli": "^6.16.0",
     "babel-core": "^6.16.0",
     "babel-eslint": "^7.0.0",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-es2015": "^6.16.0",
     "coveralls": "^2.11.14",
     "eslint": "^3.6.1",
     "jsdom": "^9.5.0",
     "nsp": "^2.6.1",
-    "nyc": "^8.3.0"
+    "nyc": "^8.3.0",
+    "webpack": "^1.13.2"
   }
 }
