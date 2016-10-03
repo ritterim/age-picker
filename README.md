@@ -74,8 +74,8 @@ Currently supports [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_
 
 - `npm install`
 - `npm run build` or `npm run watch`, then open `demo/index.html` in a browser.
-- `npm test` to run tests
-- `npm run lint` to run linter
+- `npm test` to run tests.
+- `npm run lint` to run linter.
 
 ## License
 
