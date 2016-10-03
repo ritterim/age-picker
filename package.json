@@ -1,7 +1,7 @@
 {
   "name": "age-picker",
   "version": "0.0.0",
-  "description": "Enhance `input[text=\"text\"]` tags for collecting age with optional date selection, triggered by entering a year.",
+  "description": "Enhance `input` tags for collecting age with optional date selection, triggered by entering a year.",
   "bin": "lib/age-picker.js",
   "files": [
     "lib/"
