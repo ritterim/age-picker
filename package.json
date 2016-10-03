@@ -2,7 +2,7 @@
   "name": "age-picker",
   "version": "0.0.0",
   "description": "Enhance `input` tags for collecting age with optional date selection, triggered by entering a year.",
-  "bin": "lib/age-picker.js",
+  "bin": "lib/age-picker.min.js",
   "files": [
     "lib/"
   ],
