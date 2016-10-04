@@ -18,6 +18,30 @@ test.afterEach(() => {
   }
 });
 
+test('constructor should set default configuration', t => {
+  const agePicker = new AgePicker();
+
+  t.is(agePicker.configuration.dataAttribute, 'data-age-picker');
+});
+
+test('constructor should override with provided configuration', t => {
+  const agePicker = new AgePicker({ dataAttribute: 'data-test' });
+
+  t.is(agePicker.configuration.dataAttribute, 'data-test');
+});
+
+test('constructor should apply defaults with provided configuration', t => {
+  const agePicker = new AgePicker({ dataAttribute: 'data-test' });
+
+  t.is(agePicker.configuration.prefixClass, 'age-picker');
+});
+
+test('constructor should throw error when configuration dataAttribute does not start with "data-"', t => {
+  t.throws(
+    () => new AgePicker({ dataAttribute: 'test' }),
+    'configuration dataAttribute must start with "data-".');
+});
+
 test('init should default to document.body', t => {
   new AgePicker().init();
 
