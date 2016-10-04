@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const packageJson = require('./package');
 
 module.exports = {
   entry: './src/age-picker.js',
@@ -18,6 +19,11 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.BannerPlugin(
+`Age Picker
+Copyright (c) 2016 Ritter Insurance Marketing
+License: MIT
+Repository: ${packageJson.repository.url}`),
     new webpack.optimize.UglifyJsPlugin()
   ]
 };
