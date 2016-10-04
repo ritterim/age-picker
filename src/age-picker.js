@@ -93,12 +93,12 @@ export default class AgePicker {
 
     monthSelect.addEventListener('change', () => {
       this._updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect);
-      this._updateDaySelectBasedOnMonthSelect(daySelect, monthSelect);
+      this._updateDaySelectBasedOnMonthSelect(element, monthSelect, daySelect);
     });
 
     daySelect.addEventListener('change', () => {
       this._updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect);
-      this._updateMonthSelectBasedOnDaySelect(monthSelect, daySelect);
+      this._updateMonthSelectBasedOnDaySelect(element, monthSelect, daySelect);
     });
   }
 
@@ -123,13 +123,13 @@ export default class AgePicker {
   }
 
   // Disable/enable and show/hide days to match number of days in the selected month
-  _updateDaySelectBasedOnMonthSelect(daySelect, monthSelect) {
+  _updateDaySelectBasedOnMonthSelect(element, monthSelect, daySelect) {
     [...daySelect.options]
       .forEach(x => { x.disabled = false; x.hidden = false; });
 
     const monthNumber = parseInt(monthSelect.options[monthSelect.selectedIndex].value, 10);
     if (monthNumber) {
-      const daysInMonth = this._getDaysInMonth(monthNumber);
+      const daysInMonth = this._getDaysInMonth(monthNumber, element.value);
       [...daySelect.options]
         .filter(x => x.value > daysInMonth)
         .forEach(x => { x.disabled = true; x.hidden = true; });
@@ -137,13 +137,13 @@ export default class AgePicker {
   }
 
   // Disable/enable months that can be selected based on day selection
-  _updateMonthSelectBasedOnDaySelect(monthSelect, daySelect) {
+  _updateMonthSelectBasedOnDaySelect(element, monthSelect, daySelect) {
     [...monthSelect.options]
       .forEach(x => { x.disabled = false; });
 
     const dayNumber = parseInt(daySelect.options[daySelect.selectedIndex].value, 10);
     if (dayNumber) {
-      const availableMonthNumbers = this._getAvailableMonthNumbers(dayNumber);
+      const availableMonthNumbers = this._getAvailableMonthNumbers(dayNumber, element.value);
 
       [...monthSelect.options]
         .filter(x => x.value && !availableMonthNumbers.includes(parseInt(x.value, 10)))
@@ -151,24 +151,29 @@ export default class AgePicker {
     }
   }
 
-  _getAvailableMonthNumbers(days) {
-    // TODO: Handle leap year
-    if (days < 29) {
+  _getAvailableMonthNumbers(days, year) {
+    const isLeapYear = this._isLeapYear(year);
+    if (days <= 28) {
       return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    } else if (isLeapYear && days === 29) {
+      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    } else if (!isLeapYear && days === 29) {
+      return [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     } else if (days === 30) {
       return [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     } else if (days === 31) {
       return [1, 3, 5, 7, 8, 10, 12];
-    }
-    else {
+    } else {
       throw new Error('days must be between 1 and 31 inclusive.');
     }
   }
 
-  _getDaysInMonth(monthNumber) {
+  _getDaysInMonth(monthNumber, year) {
+    const isLeapYear = this._isLeapYear(year);
+
     switch (monthNumber) {
       case 1: return 31;
-      case 2: return 28; // TODO: Handle leap year
+      case 2: return isLeapYear ? 29 : 28;
       case 3: return 31;
       case 4: return 30;
       case 5: return 31;
@@ -181,6 +186,11 @@ export default class AgePicker {
       case 12: return 31;
       default: throw new Error('monthNumber must be between 1 and 12.');
     }
+  }
+
+  // http://stackoverflow.com/a/16353241 from http://stackoverflow.com/questions/16353211/check-if-year-is-leap-year-in-javascript
+  _isLeapYear(year) {
+    return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
   }
 
   // http://stackoverflow.com/a/7091965 from http://stackoverflow.com/questions/4060004/calculate-age-in-javascript

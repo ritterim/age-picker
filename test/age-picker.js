@@ -141,3 +141,78 @@ test('create should disable non-applicable months when day selected', t => {
   t.is([...monthSelect.options].filter(x => x.disabled).length, 5);
 });
 
+test('create should handle non-leap years for month selection', t => {
+  new AgePicker().create(element);
+
+  element.value = 2015; // 2015 is not a leap year
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const daySelect = document.body.querySelector('.age-picker-day');
+
+  daySelect.selectedIndex = 29;
+  daySelect.dispatchEvent(new window.Event('change'));
+
+  // Verify value is 29
+  t.is('29', daySelect.options[daySelect.selectedIndex].text);
+
+  const monthSelect = document.body.querySelector('.age-picker-month');
+
+  t.is([...monthSelect.options].filter(x => x.disabled).length, 1);
+});
+
+test('create should handle leap years for month selection', t => {
+  new AgePicker().create(element);
+
+  element.value = 2016; // 2016 is a leap year
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const daySelect = document.body.querySelector('.age-picker-day');
+
+  daySelect.selectedIndex = 29;
+  daySelect.dispatchEvent(new window.Event('change'));
+
+  // Verify value is 29
+  t.is('29', daySelect.options[daySelect.selectedIndex].text);
+
+  const monthSelect = document.body.querySelector('.age-picker-month');
+
+  t.is([...monthSelect.options].filter(x => x.disabled).length, 0);
+});
+
+test('create should handle non-leap years for day selection', t => {
+  new AgePicker().create(element);
+
+  element.value = 2015; // 2015 is not a leap year
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const monthSelect = document.body.querySelector('.age-picker-month');
+
+  monthSelect.selectedIndex = 2;
+  monthSelect.dispatchEvent(new window.Event('change'));
+
+  // Verify month is Febuary
+  t.is('February', monthSelect.options[monthSelect.selectedIndex].text);
+
+  const daySelect = document.body.querySelector('.age-picker-day');
+
+  t.is([...daySelect.options].filter(x => x.value && !x.hidden).length, 28);
+});
+
+test('create should handle leap years for day selection', t => {
+  new AgePicker().create(element);
+
+  element.value = 2016; // 2016 is a leap year
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const monthSelect = document.body.querySelector('.age-picker-month');
+
+  monthSelect.selectedIndex = 2;
+  monthSelect.dispatchEvent(new window.Event('change'));
+
+  // Verify month is Febuary
+  t.is('February', monthSelect.options[monthSelect.selectedIndex].text);
+
+  const daySelect = document.body.querySelector('.age-picker-day');
+
+  t.is([...daySelect.options].filter(x => x.value && !x.hidden).length, 29);
+});
