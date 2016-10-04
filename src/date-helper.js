@@ -1,17 +1,14 @@
 export default class DateHelper {
   static getAvailableMonthNumbers(days, year) {
+    const allMonths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const isLeapYear = DateHelper.isLeapYear(year);
 
-    if (days >= 1 && days <= 28) {
-      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    } else if (isLeapYear && days === 29) {
-      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    } else if (!isLeapYear && days === 29) {
-      return [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    } else if (days === 30) {
-      return [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    if ((days >= 1 && days <= 28) || (isLeapYear && days === 29)) {
+      return allMonths;
+    } else if (days === 30 || (!isLeapYear && days === 29)) {
+      return allMonths.filter(x => x !== 2);
     } else if (days === 31) {
-      return [1, 3, 5, 7, 8, 10, 12];
+      return allMonths.filter(x => x !== 2 && x !== 4 && x !== 6 && x !== 9 && x !== 11);
     } else {
       throw new Error('days must be between 1 and 31 inclusive.');
     }
