@@ -101,6 +101,12 @@ test('isLeapYear returns true for leap year', t => {
   t.true(result);
 });
 
+test('isLeapYear returns false for unexpected string value', t => {
+  const result = DateHelper.isLeapYear('a_string_value');
+
+  t.false(result);
+});
+
 test('getAge returns expected value', t => {
   const now = new Date();
   const fiveYearsAgo = new Date(
