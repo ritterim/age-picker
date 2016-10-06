@@ -5,6 +5,24 @@ import DateHelper from '../src/date-helper';
 const nonLeapYear = 2015;
 const leapYear = 2016;
 
+function calculateAgeMacro(t, input, expected) {
+  const now = new Date(2016, 0, 1);
+
+  const result = new DateHelper(() => now).calculateAge(1, 1, input);
+
+  t.is(result, expected);
+}
+
+test('calculateAge for 1/1/2011', calculateAgeMacro, 2011, 5);
+test('calculateAge for 1/1/2000', calculateAgeMacro, 2000, 16);
+test('calculateAge for 1/1/1999', calculateAgeMacro, 1999, 17);
+test('calculateAge for 1/1/1950', calculateAgeMacro, 1950, 66);
+
+test('calculateAge for 1/1/11', calculateAgeMacro, 11, 5);
+test('calculateAge for 1/1/00', calculateAgeMacro, 0, 16);
+test('calculateAge for 1/1/99', calculateAgeMacro, 99, 17);
+test('calculateAge for 1/1/50', calculateAgeMacro, 50, 66);
+
 test('getAvailableMonthNumbers should return expected value for day 15', t => {
   const result = DateHelper.getAvailableMonthNumbers(15, nonLeapYear);
 
@@ -105,21 +123,4 @@ test('isLeapYear returns false for unexpected string value', t => {
   const result = DateHelper.isLeapYear('a_string_value');
 
   t.false(result);
-});
-
-test('getAge returns expected value', t => {
-  const now = new Date();
-  const fiveYearsAgo = new Date(
-    now.getFullYear() - 5,
-    now.getMonth(),
-    now.getDate(),
-    now.getHours(),
-    now.getMinutes(),
-    now.getSeconds(),
-    now.getMilliseconds());
-
-  const result = DateHelper.getAge(
-    `${fiveYearsAgo.getFullYear()}/${fiveYearsAgo.getMonth()}/${fiveYearsAgo.getDate()}`);
-
-  t.is(result, 5);
 });

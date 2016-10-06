@@ -25,6 +25,8 @@ export default class AgePicker {
     if (!this.configuration.dataAttribute.startsWith('data-')) {
       throw new Error('configuration dataAttribute must start with "data-".');
     }
+
+    this.dateHelper = new DateHelper();
   }
 
   init(domScope = this.configuration.defaultDomScope) {
@@ -113,7 +115,7 @@ export default class AgePicker {
       const day = daySelect.options[daySelect.selectedIndex].value; // 1-31
 
       if (month && day) {
-        hiddenElement.value = DateHelper.getAge(`${year}/${month}/${day}`);
+        hiddenElement.value = this.dateHelper.calculateAge(month, day, year);
       } else {
         hiddenElement.value = '';
       }

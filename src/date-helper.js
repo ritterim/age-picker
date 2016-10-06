@@ -1,4 +1,39 @@
 export default class DateHelper {
+  constructor(nowFunction = null) {
+    this.nowFunction = nowFunction || (() => new Date());
+  }
+
+  // Adapted from http://stackoverflow.com/a/10008120 from http://stackoverflow.com/questions/10008050/get-age-from-birthdate
+  calculateAge(birthMonth, birthDay, birthYear) {
+    // Handle two digit years including 00
+    if (birthYear >= 10 && birthYear <= 99) {
+      if (parseInt(`20${birthYear}`, 10) > this.nowFunction().getFullYear()) {
+        birthYear = parseInt(`19${birthYear}`, 10);
+      } else {
+        birthYear = parseInt(`20${birthYear}`, 10);
+      }
+    } else if (birthYear === 0) {
+      birthYear = 2000;
+    }
+
+    // This portion adapted from http://stackoverflow.com/a/10008120 from http://stackoverflow.com/questions/10008050/get-age-from-birthdate
+    const todayDate = this.nowFunction();
+    const todayYear = todayDate.getFullYear();
+    const todayMonth = todayDate.getMonth();
+    const todayDay = todayDate.getDate();
+    let age = todayYear - birthYear;
+
+    if (todayMonth < (birthMonth - 1)) {
+      age--;
+    }
+
+    if (((birthMonth - 1) == todayMonth) && (todayDay < birthDay)) {
+      age--;
+    }
+
+    return age;
+  }
+
   static getAvailableMonthNumbers(days, year) {
     const allMonths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const isLeapYear = DateHelper.isLeapYear(year);
@@ -37,17 +72,5 @@ export default class DateHelper {
   // http://stackoverflow.com/a/16353241 from http://stackoverflow.com/questions/16353211/check-if-year-is-leap-year-in-javascript
   static isLeapYear(year) {
     return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
-  }
-
-  // http://stackoverflow.com/a/7091965 from http://stackoverflow.com/questions/4060004/calculate-age-in-javascript
-  static getAge(dateString) {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age;
   }
 }
