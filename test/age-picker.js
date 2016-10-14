@@ -230,6 +230,48 @@ test('create should not raise change event on hiddenElement when value is modifi
   t.is(changeRaisedCount, 1);
 });
 
+test('create should raise ageChanged on element when age is modified', t => {
+  new AgePicker().create(element);
+
+  let ageChangedRaisedCount = 0;
+  element.addEventListener('ageChanged', () => (ageChangedRaisedCount++));
+
+  element.value = 21;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  t.is(ageChangedRaisedCount, 1);
+});
+
+test('create should raise ageChanged on element when age is cleared', t => {
+  new AgePicker().create(element);
+
+  element.value = 21;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  let ageChangedRaisedCount = 0;
+  element.addEventListener('ageChanged', () => (ageChangedRaisedCount++));
+
+  element.value = '';
+  element.dispatchEvent(new window.Event('keyup'));
+
+  t.is(ageChangedRaisedCount, 1);
+});
+
+test('create should not raise ageChanged on element when age is changed to same value', t => {
+  new AgePicker().create(element);
+
+  element.value = 21;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  let ageChangedRaisedCount = 0;
+  element.addEventListener('ageChanged', () => (ageChangedRaisedCount++));
+
+  element.value = 21;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  t.is(ageChangedRaisedCount, 0);
+});
+
 test('create should hide non-applicable days when month selected', t => {
   new AgePicker().create(element);
 

@@ -128,6 +128,7 @@ export default class AgePicker {
 
     if (hiddenElement.value !== startingValue) {
       hiddenElement.dispatchEvent(new window.Event('change'));
+      element.dispatchEvent(new window.Event('ageChanged'));
     }
   }
 

@@ -64,6 +64,14 @@ Scan the `domScope` and wire up any elements matching `this.configuration.dataAt
 
 Create the age picker assets targeting `element`. Used by `init()`.
 
+## Events
+
+**Note:** Events should be used rather than listening for `keyup`, `change`, etc. on the `<input data-age-picker>` tag, since a hidden input becomes the source of truth for the over-the-wire 'age'.
+
+### `ageChanged`
+
+Raised on the `input` element when the age is changed or cleared by any forms of user input (both direct entry and year, month, day inputs).
+
 ## Notes
 
 Our use cases dictate collecting the month and day from the user. However, other or future use cases may allow for using today's date. By using today's date with a provided year age could be calculated. This feature does not currently exist, but was considered.
