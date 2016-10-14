@@ -23,6 +23,7 @@
     "coveralls": "npm run coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "eslint src test",
     "test": "ava",
+    "test:watch": "ava --watch",
     "validate": "npm run lint && npm test",
     "prepare": "npm run build && npm run validate && npm run check",
     "watch": "webpack -d --watch"
