@@ -4,17 +4,8 @@ export default class DateHelper {
   }
 
   // Adapted from http://stackoverflow.com/a/10008120 from http://stackoverflow.com/questions/10008050/get-age-from-birthdate
-  calculateAge(birthMonth, birthDay, birthYear) {
-    // Handle two digit years including 00
-    if (birthYear >= 10 && birthYear <= 99) {
-      if (parseInt(`20${birthYear}`, 10) > this.nowFunction().getFullYear()) {
-        birthYear = parseInt(`19${birthYear}`, 10);
-      } else {
-        birthYear = parseInt(`20${birthYear}`, 10);
-      }
-    } else if (birthYear === 0) {
-      birthYear = 2000;
-    }
+  calculateAge(birthMonth, birthDay, userProvidedBirthYear) {
+    const birthYear = this.getBirthYearForUserProvidedValue(userProvidedBirthYear);
 
     // This portion adapted from http://stackoverflow.com/a/10008120 from http://stackoverflow.com/questions/10008050/get-age-from-birthdate
     const todayDate = this.nowFunction();
@@ -32,6 +23,21 @@ export default class DateHelper {
     }
 
     return age;
+  }
+
+  // Handle two digit years including 00
+  getBirthYearForUserProvidedValue(birthYear) {
+    if (birthYear >= 10 && birthYear <= 99) {
+      if (parseInt(`20${birthYear}`, 10) > this.nowFunction().getFullYear()) {
+        return parseInt(`19${birthYear}`, 10);
+      } else {
+        return parseInt(`20${birthYear}`, 10);
+      }
+    } else if (birthYear === 0) {
+      return 2000;
+    }
+
+    return birthYear;
   }
 
   static getAvailableMonthNumbers(days, year) {

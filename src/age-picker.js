@@ -79,9 +79,7 @@ export default class AgePicker {
 
     // Control visiblity of select elements based on input
     element.addEventListener('keyup', e => {
-      const value = e.target.value;
-
-      if (/\d{4}/.test(value)) {
+      if (/^\s*\d{4}\s*$/.test(e.target.value)) {
         monthSelect.style.visibility = 'visible';
         daySelect.style.visibility = 'visible';
       } else {
@@ -107,10 +105,13 @@ export default class AgePicker {
   }
 
   _updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect) {
-    // If year is specified or computed age value.
-    // Otherwise, use exact value specified.
-    if (/\d{4}/.test(element.value)) {
-      const year = element.value;
+    const parsedDate = this._parseDate(element.value);
+
+    if (parsedDate) {
+      hiddenElement.value = this.dateHelper.calculateAge(
+        parsedDate.getMonth() + 1, parsedDate.getDate(), parsedDate.getFullYear());
+    } else if (/^\s*\d{4}\s*$/.test(element.value)) {
+      const year = element.value.trim();
       const month = monthSelect.options[monthSelect.selectedIndex].value; // 1-12
       const day = daySelect.options[daySelect.selectedIndex].value; // 1-31
 
@@ -207,5 +208,31 @@ export default class AgePicker {
 
       select.appendChild(option);
     });
+  }
+
+  _parseDate(val) {
+    if (/\d{1,4}(\/|-)\d{1,2}(\/|-)\d{1,4}/.test(val)) {
+      const split = val.split(/(\/|-)/);
+      const splitYearPosition = 4;
+
+      // Use a four digit year exactly.
+      // For a two digit year use a year based on today's date.
+      const year = split.some(x => x >= 1000)
+        ? split.filter(x => parseInt(x, 10) >= 1000)[0]
+        : this.dateHelper.getBirthYearForUserProvidedValue(parseInt(split[splitYearPosition], 10));
+
+      // Remove leading zeros for consistent `new Date('string_value')` parsing.
+      const valDate = new Date(val.replace(/0(\d{1})/, '$1'));
+
+      const date = new Date(year, valDate.getMonth(), valDate.getDate());
+
+      if (isNaN(date)) {
+        return null;
+      }
+
+      return date;
+    }
+
+    return null;
   }
 }

@@ -20,7 +20,7 @@ npm install age-picker
 ## Quickstart
 
 ```html
-<label for="age">Age or Birth Year</label>
+<label for="age">Age or DOB</label>
 <input type="text" id="age" name="age" data-age-picker />
 ```
 

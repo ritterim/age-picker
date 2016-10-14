@@ -1,21 +1,26 @@
+/* global global:true, require: true */
+
 import test from 'ava';
 
 import AgePicker from '../src/age-picker';
+import DateHelper from '../src/date-helper';
 
 let element;
 
 test.beforeEach(() => {
+  // https://github.com/avajs/ava/blob/4d3ed27865dc7cdfde7e651711ee4cd0646ea6e8/docs/recipes/browser-testing.md
+  global.document = require('jsdom').jsdom('<body></body>');
+  global.window = document.defaultView;
+  global.navigator = window.navigator;
+
+  if (document.body.hasChildNodes()) {
+    throw new Error('document.body should be empty.');
+  }
+
   element = document.createElement('input');
   element.setAttribute('data-age-picker', true);
 
   document.body.appendChild(element);
-});
-
-test.afterEach(() => {
-  // http://stackoverflow.com/a/3955238 from http://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
-  while (document.body.firstChild) {
-    document.body.removeChild(document.body.firstChild);
-  }
 });
 
 test('constructor should set default configuration', t => {
@@ -88,7 +93,18 @@ test('create should create expected assets on passed in element', t => {
   t.is(container.querySelectorAll('input[type="hidden"]').length, 1);
 });
 
-test('create should set hidden field value for age value', t => {
+test('create should set hidden field value for single digit age value', t => {
+  new AgePicker().create(element);
+
+  element.value = 5;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  t.is(hiddenInput.value, '5');
+});
+
+test('create should set hidden field value for two digit age value', t => {
   new AgePicker().create(element);
 
   element.value = 21;
@@ -96,7 +112,18 @@ test('create should set hidden field value for age value', t => {
 
   const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
 
-  t.is('21', hiddenInput.value);
+  t.is(hiddenInput.value, '21');
+});
+
+test('create should set hidden field value for three digit age value', t => {
+  new AgePicker().create(element);
+
+  element.value = 101;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  t.is(hiddenInput.value, '101');
 });
 
 test('create should set blank hidden field value for year value only', t => {
@@ -107,8 +134,49 @@ test('create should set blank hidden field value for year value only', t => {
 
   const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
 
-  t.is('', hiddenInput.value);
+  t.is(hiddenInput.value, '');
 });
+
+test('create should set hidden field value for date string value', t => {
+  new AgePicker().create(element);
+
+  const now = new Date();
+  // Go back 5 years and 1 month from now
+  element.value = `${now.getMonth() - 1 + 1}/${now.getDate()}/${now.getFullYear() - 5}`;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  t.is(hiddenInput.value, '5');
+});
+
+function directInputMacro(t, dateString, expectedAge) {
+  new AgePicker().create(element);
+
+  element.value = dateString;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  t.is(hiddenInput.value, expectedAge.toString());
+}
+
+directInputMacro.title = (providedTitle, input, expected) =>
+  `create should set hidden field value for date string "${input}" to age ${expected}`;
+
+const dateHelper = new DateHelper(() => new Date(2016, 1, 1));
+
+test(directInputMacro, '1/1/1999', dateHelper.calculateAge(1, 1, 1999));
+test(directInputMacro, '01/01/1999', dateHelper.calculateAge(1, 1, 1999));
+test(directInputMacro, '1-1-1999', dateHelper.calculateAge(1, 1, 1999));
+test(directInputMacro, '01-1-1999', dateHelper.calculateAge(1, 1, 1999));
+test(directInputMacro, '1/1/99', dateHelper.calculateAge(1, 1, 1999));
+test(directInputMacro, '1-01-99', dateHelper.calculateAge(1, 1, 1999));
+test(directInputMacro, '1999-1-1', dateHelper.calculateAge(1, 1, 1999));
+test(directInputMacro, '1999-01-01', dateHelper.calculateAge(1, 1, 1999));
+test(directInputMacro, '1/1/51', dateHelper.calculateAge(1, 1, 1951));
+test(directInputMacro, '1/1/50', dateHelper.calculateAge(1, 1, 1950));
+test(directInputMacro, '1/1/49', dateHelper.calculateAge(1, 1, 1949));
 
 test('create should set hidden field value when year, month, and day specified', t => {
   new AgePicker().create(element);
@@ -126,7 +194,7 @@ test('create should set hidden field value when year, month, and day specified',
 
   const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
 
-  t.is('21', hiddenInput.value);
+  t.is(hiddenInput.value, '21');
 });
 
 test('create should throw if no element is provided', t => {
