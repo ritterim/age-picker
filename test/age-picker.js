@@ -201,6 +201,35 @@ test('create should throw if no element is provided', t => {
   t.throws(() => new AgePicker().create(), 'element must be provided.');
 });
 
+test('create should raise change event on hiddenElement when value change occurs', t => {
+  new AgePicker().create(element);
+
+  let changeRaisedCount = 0;
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+  hiddenInput.addEventListener('change', () => (changeRaisedCount++));
+
+  element.value = 21;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  t.is(changeRaisedCount, 1);
+});
+
+test('create should not raise change event on hiddenElement when value is modified to the same value', t => {
+  new AgePicker().create(element);
+
+  let changeRaisedCount = 0;
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+  hiddenInput.addEventListener('change', () => (changeRaisedCount++));
+
+  element.value = 21;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  element.value = 21;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  t.is(changeRaisedCount, 1);
+});
+
 test('create should hide non-applicable days when month selected', t => {
   new AgePicker().create(element);
 

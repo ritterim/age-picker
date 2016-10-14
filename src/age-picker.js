@@ -105,6 +105,8 @@ export default class AgePicker {
   }
 
   _updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect) {
+    const startingValue = hiddenElement.value;
+
     const parsedDate = this._parseDate(element.value);
 
     if (parsedDate) {
@@ -124,7 +126,9 @@ export default class AgePicker {
       hiddenElement.value = element.value;
     }
 
-    hiddenElement.dispatchEvent(new window.Event('change'));
+    if (hiddenElement.value !== startingValue) {
+      hiddenElement.dispatchEvent(new window.Event('change'));
+    }
   }
 
   // Disable/enable and show/hide days to match number of days in the selected month
