@@ -72,7 +72,7 @@ Create the age picker assets targeting `element`. Used by `init()`.
 
 ### `ageChanged`
 
-Raised on the `input` element when the age is changed or cleared by any forms of user input (both direct entry and year, month, day inputs).
+Raised on the `input` element when the age is changed or cleared by any forms of user input (both direct entry and year, month, day inputs). This event includes the age `value`.
 
 ## Notes
 

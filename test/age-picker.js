@@ -397,6 +397,20 @@ test('create should not raise ageChanged on element when age is changed to same 
   t.is(ageChangedRaisedCount, 0);
 });
 
+test('create should raise ageChanged on element with value set on event', t => {
+  const element = addElement();
+
+  new AgePicker().create(element);
+
+  const ageChangedRaisedEvents = [];
+  element.addEventListener('ageChanged', e => (ageChangedRaisedEvents.push(e)));
+
+  element.value = 21;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  t.true(ageChangedRaisedEvents.every(x => x.value == 21));
+});
+
 test('create should hide non-applicable days when month selected', t => {
   const element = addElement();
 
