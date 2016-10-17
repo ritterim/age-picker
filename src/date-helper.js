@@ -27,7 +27,10 @@ export default class DateHelper {
 
   // Handle two digit years including 00
   getBirthYearForUserProvidedValue(birthYear) {
-    if (birthYear >= 10 && birthYear <= 99) {
+    // Prepend 0 as necessary
+    if (birthYear >= 0 && birthYear <= 9) {
+      return parseInt(`200${birthYear}`, 10);
+    } else if (birthYear >= 10 && birthYear <= 99) {
       if (parseInt(`20${birthYear}`, 10) > this.nowFunction().getFullYear()) {
         return parseInt(`19${birthYear}`, 10);
       } else {

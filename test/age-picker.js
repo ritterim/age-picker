@@ -289,6 +289,7 @@ test(directInputMacro, '1999-01-01', dateHelper.calculateAge(1, 1, 1999));
 test(directInputMacro, '1/1/51', dateHelper.calculateAge(1, 1, 1951));
 test(directInputMacro, '1/1/50', dateHelper.calculateAge(1, 1, 1950));
 test(directInputMacro, '1/1/49', dateHelper.calculateAge(1, 1, 1949));
+test(directInputMacro, '1/1/02', dateHelper.calculateAge(1, 1, 2002));
 
 test('create should set hidden field value when year, month, and day specified', t => {
   const element = addElement();
