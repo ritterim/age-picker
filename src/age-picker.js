@@ -70,10 +70,6 @@ export default class AgePicker {
     // Append `hiddenElement` inside container
     container.appendChild(hiddenElement);
 
-    element.addEventListener('keyup', () => {
-      this._updateHiddenElementValue(hiddenElement, element);
-    });
-
     if (element.hasAttribute(this.configuration.dataAttribute)) {
       // Create and append month and day select tags
       const monthSelect = this._getMonthSelect();
@@ -98,6 +94,8 @@ export default class AgePicker {
           monthSelect.selectedIndex = 0;
           daySelect.selectedIndex = 0;
         }
+
+        this._updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect);
       });
 
       monthSelect.addEventListener('change', () => {
@@ -108,6 +106,10 @@ export default class AgePicker {
       daySelect.addEventListener('change', () => {
         this._updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect);
         this._updateMonthSelectBasedOnDaySelect(element, monthSelect, daySelect);
+      });
+    } else if (element.hasAttribute(this.configuration.directEntryOnlyDataAttribute)) {
+      element.addEventListener('keyup', () => {
+        this._updateHiddenElementValue(hiddenElement, element);
       });
     }
   }
