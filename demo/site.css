@@ -1,7 +1,3 @@
-.container {
-  margin-top: 50px;
-}
-
-.result-row {
-  margin-top: 50px;
+.control-row, .result-row {
+  margin-top: 35px;
 }

@@ -2,11 +2,24 @@ new AgePicker({
   selectClasses: ['form-control']
 }).init();
 
-var ageValue = document.getElementById('age-value');
-var result = document.getElementById('result');
+var ids = [
+  {
+    ageValue: 'age-value',
+    result: 'result'
+  },
+  {
+    ageValue: 'direct-entry-only-age-value',
+    result: 'direct-entry-only-result'
+  }
+];
 
-result.innerHTML = ageValue.value;
+ids.forEach(idSet => {
+  var ageValue = document.getElementById(idSet.ageValue);
+  var result = document.getElementById(idSet.result);
 
-ageValue.addEventListener('change', e => {
-  result.innerHTML = e.target.value;
+  result.innerHTML = ageValue.value;
+
+  ageValue.addEventListener('change', e => {
+    result.innerHTML = e.target.value;
+  });
 });

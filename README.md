@@ -1,8 +1,6 @@
 # Age Picker
 
-Enhance `input` tags for collecting age with optional date selection, triggered by entering a year.
-
-All age picker DOM assets will be wrapped everything inside container `div`s, including existing `input` tags. Initially invisible `select` tags will be added for choosing month and day. These dropdowns will occupy space while hidden to avoid UI related reshuffling.
+Enhance `input` tags for collecting age information using `data-` attributes and simple wireup JavaScript.
 
 ## Example
 
@@ -22,6 +20,9 @@ npm install age-picker
 ```html
 <label for="age">Age or DOB</label>
 <input type="text" id="age" name="age" data-age-picker />
+
+<label for="direct-entry-only-age">Age or DOB (direct entry only)</label>
+<input type="text" id="direct-entry-only-age" name="direct-entry-only-age" data-age-picker-direct-entry-only />
 ```
 
 ```javascript
@@ -30,7 +31,7 @@ new AgePicker().init();
 
 ## Usage
 
-- Decorate the `input` tags with a `data-age-picker` attribute.
+- Decorate `input` tags with a `data-age-picker` or `data-age-picker-direct-entry-only` attribute.
 - Run `new AgePicker().init();`, optionally specifying the scope in the parameter *(defaults to `document.body`)*.
 
 Configuration options can be specified in the `AgePicker` constructor. Example:
@@ -43,16 +44,17 @@ new AgePicker({
 
 ## Configuration options
 
-| Option             | Description                                                               | Default Value |
-| ------------------ | ------------------------------------------------------------------------- | ------------- |
-| `defaultDomScope`  | The default DOM scope to scan for `dataAttribute` items.                  | `document.body` |
-| `dataAttribute`    | The `data-` attribute to scan for.                                        | `'data-age-picker'` |
-| `prefixClass`      | The prefix for CSS classes used by other configuration CSS classes.       | `'age-picker'` |
-| `containerClass`   | The container class surrouding the age picker and all related DOM assets. | ``${this.configuration.prefixClass}-container`` |
-| `monthSelectClass` | The `select` tag to select the month.                                     | ``${this.configuration.prefixClass}-month`` |
-| `daySelectClass`   | The `select` tag to select the day.                                       | ``${this.configuration.prefixClass}-day`` |
-| `selectClasses`    | An array of custom classes to apply to month and day `select` elements.   | `[]` |
-| `i18n`             | Internationalization data, defaults to US English.                        | `{ months: [...] }` |
+| Option                         | Description                                                               | Default Value |
+| ------------------------------ | ------------------------------------------------------------------------- | ------------- |
+| `defaultDomScope`              | The default DOM scope to scan for `dataAttribute` items.                  | `document.body` |
+| `dataAttribute`                | The `data-` attribute to scan for.                                        | `'data-age-picker'` |
+| `directEntryOnlyDataAttribute` | The `data-` attribute to scan for supporting direct entry only.           | `'data-age-picker-direct-entry-only'` |
+| `prefixClass`                  | The prefix for CSS classes used by other configuration CSS classes.       | `'age-picker'` |
+| `containerClass`               | The container class surrouding the age picker and all related DOM assets. | ``${this.configuration.prefixClass}-container`` |
+| `monthSelectClass`             | The `select` tag to select the month.                                     | ``${this.configuration.prefixClass}-month`` |
+| `daySelectClass`               | The `select` tag to select the day.                                       | ``${this.configuration.prefixClass}-day`` |
+| `selectClasses`                | An array of custom classes to apply to month and day `select` elements.   | `[]` |
+| `i18n`                         | Internationalization data, defaults to US English.                        | `{ months: [...] }` |
 
 ## Methods
 

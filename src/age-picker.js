@@ -5,6 +5,7 @@ export default class AgePicker {
     const defaultConfiguration = {
       defaultDomScope: document.body,
       dataAttribute: 'data-age-picker',
+      directEntryOnlyDataAttribute: 'data-age-picker-direct-entry-only',
       prefixClass: 'age-picker',
       selectClasses: [],
       i18n: {
@@ -37,6 +38,9 @@ export default class AgePicker {
     // Allow for input[type="text"] or input[type="number"] usages.
     const items = [...domScope.querySelectorAll(`input[${this.configuration.dataAttribute}]`)];
     items.forEach(i => this.create(i));
+
+    const directEntryItems = [...domScope.querySelectorAll(`input[${this.configuration.directEntryOnlyDataAttribute}]`)];
+    directEntryItems.forEach(i => this.create(i));
   }
 
   create(element) {
@@ -66,42 +70,46 @@ export default class AgePicker {
     // Append `hiddenElement` inside container
     container.appendChild(hiddenElement);
 
-    // Create and append month and day select tags
-    const monthSelect = this._getMonthSelect();
-    const daySelect = this._getDaySelect();
-
-    container.appendChild(monthSelect);
-    container.appendChild(daySelect);
-
-    // Initially hide select elements, but retain their 'space'
-    monthSelect.style.visibility = 'hidden';
-    daySelect.style.visibility = 'hidden';
-
-    // Control visiblity of select elements based on input
-    element.addEventListener('keyup', e => {
-      if (/^\s*\d{4}\s*$/.test(e.target.value)) {
-        monthSelect.style.visibility = 'visible';
-        daySelect.style.visibility = 'visible';
-      } else {
-        monthSelect.style.visibility = 'hidden';
-        daySelect.style.visibility = 'hidden';
-
-        monthSelect.selectedIndex = 0;
-        daySelect.selectedIndex = 0;
-      }
-
-      this._updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect);
+    element.addEventListener('keyup', () => {
+      this._updateHiddenElementValue(hiddenElement, element);
     });
 
-    monthSelect.addEventListener('change', () => {
-      this._updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect);
-      this._updateDaySelectBasedOnMonthSelect(element, monthSelect, daySelect);
-    });
+    if (element.hasAttribute(this.configuration.dataAttribute)) {
+      // Create and append month and day select tags
+      const monthSelect = this._getMonthSelect();
+      const daySelect = this._getDaySelect();
 
-    daySelect.addEventListener('change', () => {
-      this._updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect);
-      this._updateMonthSelectBasedOnDaySelect(element, monthSelect, daySelect);
-    });
+      container.appendChild(monthSelect);
+      container.appendChild(daySelect);
+
+      // Initially hide select elements, but retain their 'space'
+      monthSelect.style.visibility = 'hidden';
+      daySelect.style.visibility = 'hidden';
+
+      // Control visiblity of select elements based on input
+      element.addEventListener('keyup', e => {
+        if (/^\s*\d{4}\s*$/.test(e.target.value)) {
+          monthSelect.style.visibility = 'visible';
+          daySelect.style.visibility = 'visible';
+        } else {
+          monthSelect.style.visibility = 'hidden';
+          daySelect.style.visibility = 'hidden';
+
+          monthSelect.selectedIndex = 0;
+          daySelect.selectedIndex = 0;
+        }
+      });
+
+      monthSelect.addEventListener('change', () => {
+        this._updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect);
+        this._updateDaySelectBasedOnMonthSelect(element, monthSelect, daySelect);
+      });
+
+      daySelect.addEventListener('change', () => {
+        this._updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect);
+        this._updateMonthSelectBasedOnDaySelect(element, monthSelect, daySelect);
+      });
+    }
   }
 
   _updateHiddenElementValue(hiddenElement, element, monthSelect, daySelect) {
@@ -112,7 +120,7 @@ export default class AgePicker {
     if (parsedDate) {
       hiddenElement.value = this.dateHelper.calculateAge(
         parsedDate.getMonth() + 1, parsedDate.getDate(), parsedDate.getFullYear());
-    } else if (/^\s*\d{4}\s*$/.test(element.value)) {
+    } else if (element.hasAttribute(this.configuration.dataAttribute) && /^\s*\d{4}\s*$/.test(element.value)) {
       const year = element.value.trim();
       const month = monthSelect.options[monthSelect.selectedIndex].value; // 1-12
       const day = daySelect.options[daySelect.selectedIndex].value; // 1-31

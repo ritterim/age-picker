@@ -5,8 +5,6 @@ import test from 'ava';
 import AgePicker from '../src/age-picker';
 import DateHelper from '../src/date-helper';
 
-let element;
-
 test.beforeEach(() => {
   // https://github.com/avajs/ava/blob/4d3ed27865dc7cdfde7e651711ee4cd0646ea6e8/docs/recipes/browser-testing.md
   global.document = require('jsdom').jsdom('<body></body>');
@@ -16,12 +14,25 @@ test.beforeEach(() => {
   if (document.body.hasChildNodes()) {
     throw new Error('document.body should be empty.');
   }
+});
 
-  element = document.createElement('input');
+function addElement() {
+  const element = document.createElement('input');
   element.setAttribute('data-age-picker', true);
 
   document.body.appendChild(element);
-});
+
+  return element;
+}
+
+function addDirectEntryOnlyElement() {
+  const directEntryOnlyElement = document.createElement('input');
+  directEntryOnlyElement.setAttribute('data-age-picker-direct-entry-only', true);
+
+  document.body.appendChild(directEntryOnlyElement);
+
+  return directEntryOnlyElement;
+}
 
 test('constructor should set default configuration', t => {
   const agePicker = new AgePicker();
@@ -48,12 +59,16 @@ test('constructor should throw error when configuration dataAttribute does not s
 });
 
 test('init should default to document.body', t => {
+  addElement();
+
   new AgePicker().init();
 
   t.is(document.body.querySelectorAll('.age-picker-container').length, 1);
 });
 
 test('init(domScope) should use provided domScope', t => {
+  addElement();
+
   const domScope = document.createElement('div');
 
   const element2 = document.createElement('input');
@@ -67,6 +82,8 @@ test('init(domScope) should use provided domScope', t => {
 });
 
 test('init should wire up multiple data- attribute items', t => {
+  addElement();
+
   const element2 = document.createElement('input');
   element2.setAttribute('data-age-picker', true);
 
@@ -82,6 +99,8 @@ test('init should throw if a DOM item is not provided', t => {
 });
 
 test('create should create expected assets on passed in element', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   t.is(document.body.querySelectorAll('.age-picker-container').length, 1);
@@ -93,7 +112,36 @@ test('create should create expected assets on passed in element', t => {
   t.is(container.querySelectorAll('input[type="hidden"]').length, 1);
 });
 
+test('create direct entry only should create expected assets on passed in element', t => {
+  const element = addDirectEntryOnlyElement();
+
+  new AgePicker().create(element);
+
+  t.is(document.body.querySelectorAll('.age-picker-container').length, 1);
+
+  const container = document.body.querySelector('.age-picker-container');
+
+  t.is(container.querySelectorAll('.age-picker-month').length, 0);
+  t.is(container.querySelectorAll('.age-picker-day').length, 0);
+  t.is(container.querySelectorAll('input[type="hidden"]').length, 1);
+});
+
 test('create should set hidden field value for single digit age value', t => {
+  const element = addElement();
+
+  new AgePicker().create(element);
+
+  element.value = 5;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  t.is(hiddenInput.value, '5');
+});
+
+test('create direct entry only should set hidden field value for single digit age value', t => {
+  const element = addDirectEntryOnlyElement();
+
   new AgePicker().create(element);
 
   element.value = 5;
@@ -105,6 +153,21 @@ test('create should set hidden field value for single digit age value', t => {
 });
 
 test('create should set hidden field value for two digit age value', t => {
+  const element = addElement();
+
+  new AgePicker().create(element);
+
+  element.value = 21;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  t.is(hiddenInput.value, '21');
+});
+
+test('create direct entry only should set hidden field value for two digit age value', t => {
+  const element = addDirectEntryOnlyElement();
+
   new AgePicker().create(element);
 
   element.value = 21;
@@ -116,6 +179,21 @@ test('create should set hidden field value for two digit age value', t => {
 });
 
 test('create should set hidden field value for three digit age value', t => {
+  const element = addElement();
+
+  new AgePicker().create(element);
+
+  element.value = 101;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  t.is(hiddenInput.value, '101');
+});
+
+test('create direct entry only should set hidden field value for three digit age value', t => {
+  const element = addDirectEntryOnlyElement();
+
   new AgePicker().create(element);
 
   element.value = 101;
@@ -127,6 +205,8 @@ test('create should set hidden field value for three digit age value', t => {
 });
 
 test('create should set blank hidden field value for year value only', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   element.value = 1990;
@@ -137,7 +217,37 @@ test('create should set blank hidden field value for year value only', t => {
   t.is(hiddenInput.value, '');
 });
 
+test('create direct entry only should set age for four digit value', t => {
+  const element = addDirectEntryOnlyElement();
+
+  new AgePicker().create(element);
+
+  element.value = 1990;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  t.is(hiddenInput.value, '1990');
+});
+
 test('create should set hidden field value for date string value', t => {
+  const element = addElement();
+
+  new AgePicker().create(element);
+
+  const now = new Date();
+  // Go back 5 years and 1 month from now
+  element.value = `${now.getMonth() - 1 + 1}/${now.getDate()}/${now.getFullYear() - 5}`;
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  t.is(hiddenInput.value, '5');
+});
+
+test('create direct entry only should set hidden field value for date string value', t => {
+  const element = addDirectEntryOnlyElement();
+
   new AgePicker().create(element);
 
   const now = new Date();
@@ -151,6 +261,8 @@ test('create should set hidden field value for date string value', t => {
 });
 
 function directInputMacro(t, dateString, expectedAge) {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   element.value = dateString;
@@ -179,6 +291,8 @@ test(directInputMacro, '1/1/50', dateHelper.calculateAge(1, 1, 1950));
 test(directInputMacro, '1/1/49', dateHelper.calculateAge(1, 1, 1949));
 
 test('create should set hidden field value when year, month, and day specified', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   element.value = new Date().getFullYear() - 21;
@@ -202,6 +316,8 @@ test('create should throw if no element is provided', t => {
 });
 
 test('create should raise change event on hiddenElement when value change occurs', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   let changeRaisedCount = 0;
@@ -215,6 +331,8 @@ test('create should raise change event on hiddenElement when value change occurs
 });
 
 test('create should not raise change event on hiddenElement when value is modified to the same value', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   let changeRaisedCount = 0;
@@ -231,6 +349,8 @@ test('create should not raise change event on hiddenElement when value is modifi
 });
 
 test('create should raise ageChanged on element when age is modified', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   let ageChangedRaisedCount = 0;
@@ -243,6 +363,8 @@ test('create should raise ageChanged on element when age is modified', t => {
 });
 
 test('create should raise ageChanged on element when age is cleared', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   element.value = 21;
@@ -258,6 +380,8 @@ test('create should raise ageChanged on element when age is cleared', t => {
 });
 
 test('create should not raise ageChanged on element when age is changed to same value', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   element.value = 21;
@@ -273,6 +397,8 @@ test('create should not raise ageChanged on element when age is changed to same 
 });
 
 test('create should hide non-applicable days when month selected', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   const monthSelect = document.body.querySelector('.age-picker-month');
@@ -289,6 +415,8 @@ test('create should hide non-applicable days when month selected', t => {
 });
 
 test('create should disable non-applicable months when day selected', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   const daySelect = document.body.querySelector('.age-picker-day');
@@ -305,6 +433,8 @@ test('create should disable non-applicable months when day selected', t => {
 });
 
 test('create should handle non-leap years for month selection', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   element.value = 2015; // 2015 is not a leap year
@@ -324,6 +454,8 @@ test('create should handle non-leap years for month selection', t => {
 });
 
 test('create should handle leap years for month selection', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   element.value = 2016; // 2016 is a leap year
@@ -343,6 +475,8 @@ test('create should handle leap years for month selection', t => {
 });
 
 test('create should handle non-leap years for day selection', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   element.value = 2015; // 2015 is not a leap year
@@ -362,6 +496,8 @@ test('create should handle non-leap years for day selection', t => {
 });
 
 test('create should handle leap years for day selection', t => {
+  const element = addElement();
+
   new AgePicker().create(element);
 
   element.value = 2016; // 2016 is a leap year

@@ -7,7 +7,14 @@
   </head>
   <body>
     <div class="container">
-      <div class="row">
+      <h1>Demos</h1>
+      <hr />
+      <div class="row header-row">
+        <div class="col-md-12">
+          <h2><code>data-age-picker</code></h2>
+        </div>
+      </div>
+      <div class="row control-row">
         <div class="col-md-12">
           <form class="form-inline">
             <div class="form-group">
@@ -22,6 +29,28 @@
           age-value: <span id="result"></span>
         </div>
       </div>
+      <hr />
+      <div class="row header-row">
+        <div class="col-md-12">
+          <h2><code>data-age-picker-direct-entry-only</code></h2>
+        </div>
+      </div>
+      <div class="row control-row">
+        <div class="col-md-12">
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="direct-entry-only-age">Age or DOB</label>
+              <input id="direct-entry-only-age" name="direct-entry-only-age" class="form-control" type="text" data-age-picker-direct-entry-only />
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row result-row">
+        <div class="col-md-6">
+          direct-entry-only-age-value: <span id="direct-entry-only-result"></span>
+        </div>
+      </div>
+      <hr />
     </div>
     <script src="../lib/age-picker.min.js"></script>
     <script src="demo.js"></script>
