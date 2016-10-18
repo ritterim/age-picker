@@ -13,6 +13,9 @@ function calculateAgeMacro(t, input, expected) {
   t.is(result, expected);
 }
 
+calculateAgeMacro.title = (providedTitle, input, expected) =>
+  `calculateAge should return ${expected} for 1/1/${input}`;
+
 test('calculateAge for 1/1/2011', calculateAgeMacro, 2011, 5);
 test('calculateAge for 1/1/2000', calculateAgeMacro, 2000, 16);
 test('calculateAge for 1/1/1999', calculateAgeMacro, 1999, 17);
