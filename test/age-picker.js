@@ -94,6 +94,15 @@ test('init should wire up multiple data- attribute items', t => {
   t.is(document.body.querySelectorAll('.age-picker-container').length, 2);
 });
 
+test('init should wire up both normal and direct entry only items', t => {
+  addElement();
+  addDirectEntryOnlyElement();
+
+  new AgePicker().init();
+
+  t.is(document.body.querySelectorAll('.age-picker-container').length, 2);
+});
+
 test('init should throw if a DOM item is not provided', t => {
   t.throws(() => new AgePicker().init(null), 'domScope must be provided.');
 });
