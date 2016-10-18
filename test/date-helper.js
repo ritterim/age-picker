@@ -29,7 +29,7 @@ test('calculateAge for 1/1/50', calculateAgeMacro, 50, 66);
 function getBirthYearForUserProvidedValueMacro(t, input, expected) {
   const now = new Date(2016, 0, 1);
 
-  const result = new DateHelper().getBirthYearForUserProvidedValue(input);
+  const result = new DateHelper(() => now).getBirthYearForUserProvidedValue(input);
 
   t.is(result, expected);
 }
