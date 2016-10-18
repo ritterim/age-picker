@@ -36,8 +36,6 @@ export default class DateHelper {
       } else {
         return parseInt(`20${birthYear}`, 10);
       }
-    } else if (birthYear === 0) {
-      return 2000;
     }
 
     return birthYear;
