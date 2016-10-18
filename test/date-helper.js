@@ -48,9 +48,9 @@ test('getBirthYearForUserProvidedValue for 51', getBirthYearForUserProvidedValue
 test('getBirthYearForUserProvidedValue for 1999', getBirthYearForUserProvidedValueMacro, 1999, 1999);
 test('getBirthYearForUserProvidedValue for 99', getBirthYearForUserProvidedValueMacro, 99, 1999);
 test('getBirthYearForUserProvidedValue for 2000', getBirthYearForUserProvidedValueMacro, 2000, 2000);
-test('getBirthYearForUserProvidedValue for 00', getBirthYearForUserProvidedValueMacro, 0, 2000);
+test('getBirthYearForUserProvidedValue for 0', getBirthYearForUserProvidedValueMacro, 0, 2000);
 test('getBirthYearForUserProvidedValue for 2001', getBirthYearForUserProvidedValueMacro, 2001, 2001);
-test('getBirthYearForUserProvidedValue for 01', getBirthYearForUserProvidedValueMacro, 1, 2001);
+test('getBirthYearForUserProvidedValue for 1', getBirthYearForUserProvidedValueMacro, 1, 2001);
 test('getBirthYearForUserProvidedValue for 2015', getBirthYearForUserProvidedValueMacro, 2015, 2015);
 test('getBirthYearForUserProvidedValue for 15', getBirthYearForUserProvidedValueMacro, 15, 2015);
 test('getBirthYearForUserProvidedValue for 2016', getBirthYearForUserProvidedValueMacro, 2016, 2016);
