@@ -20,7 +20,7 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin(
-`Age Picker
+`Age Picker v${packageJson.version}
 Copyright (c) 2016 Ritter Insurance Marketing
 License: MIT
 Repository: ${packageJson.repository.url}`),
