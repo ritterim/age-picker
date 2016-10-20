@@ -70,6 +70,10 @@ export default class AgePicker {
     // Append `hiddenElement` inside container
     container.appendChild(hiddenElement);
 
+    if (element.value) {
+      this._updateHiddenElementValue(hiddenElement, element);
+    }
+
     if (element.hasAttribute(this.configuration.dataAttribute)) {
       // Create and append month and day select tags
       const monthSelect = this._getMonthSelect();

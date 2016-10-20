@@ -16,8 +16,9 @@ test.beforeEach(() => {
   }
 });
 
-function addElement() {
+function addElement(value) {
   const element = document.createElement('input');
+  element.value = value;
   element.setAttribute('data-age-picker', true);
 
   document.body.appendChild(element);
@@ -25,8 +26,9 @@ function addElement() {
   return element;
 }
 
-function addDirectEntryOnlyElement() {
+function addDirectEntryOnlyElement(value) {
   const directEntryOnlyElement = document.createElement('input');
+  directEntryOnlyElement.value = value;
   directEntryOnlyElement.setAttribute('data-age-picker-direct-entry-only', true);
 
   document.body.appendChild(directEntryOnlyElement);
@@ -133,6 +135,54 @@ test('create direct entry only should create expected assets on passed in elemen
   t.is(container.querySelectorAll('.age-picker-month').length, 0);
   t.is(container.querySelectorAll('.age-picker-day').length, 0);
   t.is(container.querySelectorAll('input[type="hidden"]').length, 1);
+});
+
+test('create should use existing age value if one exists', t => {
+  const element = addElement(25);
+
+  new AgePicker().create(element);
+
+  const container = document.body.querySelector('.age-picker-container');
+
+  t.is(container.querySelector('input[type="hidden"]').value, '25');
+});
+
+test('create should use existing date value if one exists', t => {
+  const now = new Date();
+
+  // Go back 25 years and 1 month from now
+  const element = addElement(
+    `${now.getMonth() - 1 + 1}/${now.getDate()}/${now.getFullYear() - 25}`);
+
+  new AgePicker().create(element);
+
+  const container = document.body.querySelector('.age-picker-container');
+
+  t.is(container.querySelector('input[type="hidden"]').value, '25');
+});
+
+test('create direct entry only should use existing age value if one exists', t => {
+  const element = addDirectEntryOnlyElement(25);
+
+  new AgePicker().create(element);
+
+  const container = document.body.querySelector('.age-picker-container');
+
+  t.is(container.querySelector('input[type="hidden"]').value, '25');
+});
+
+test('create direct entry only should use existing date value if one exists', t => {
+  const now = new Date();
+
+  // Go back 25 years and 1 month from now
+  const element = addDirectEntryOnlyElement(
+    `${now.getMonth() - 1 + 1}/${now.getDate()}/${now.getFullYear() - 25}`);
+
+  new AgePicker().create(element);
+
+  const container = document.body.querySelector('.age-picker-container');
+
+  t.is(container.querySelector('input[type="hidden"]').value, '25');
 });
 
 test('create should set hidden field value for single digit age value', t => {
