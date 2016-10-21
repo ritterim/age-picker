@@ -185,20 +185,20 @@ test('create direct entry only should use existing date value if one exists', t 
   t.is(container.querySelector('input[type="hidden"]').value, '25');
 });
 
-test('create should clear existing value from element if one exists', t => {
+test('create should not clear existing value from element if one exists', t => {
   const element = addElement(25);
 
   new AgePicker().create(element);
 
-  t.is(element.value, '');
+  t.is(element.value, '25');
 });
 
-test('create direct entry only should clear existing value from element if one exists', t => {
+test('create direct entry only should not clear existing value from element if one exists', t => {
   const element = addDirectEntryOnlyElement(25);
 
   new AgePicker().create(element);
 
-  t.is(element.value, '');
+  t.is(element.value, '25');
 });
 
 test('create should set hidden field value for single digit age value', t => {

@@ -72,7 +72,6 @@ export default class AgePicker {
 
     if (element.value) {
       this._updateHiddenElementValue(hiddenElement, element);
-      element.value = '';
     }
 
     if (element.hasAttribute(this.configuration.dataAttribute)) {
