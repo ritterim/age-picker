@@ -1,5 +1,7 @@
 # Age Picker
 
+[![npm](https://img.shields.io/npm/v/age-picker.svg)](https://www.npmjs.com/package/age-picker)
+
 Enhance `input` tags for collecting age information using `data-` attributes and simple wireup JavaScript.
 
 ## Example
