@@ -10,12 +10,9 @@ Enhance `input` tags for collecting age information using `data-` attributes and
 
 ## Installation
 
-TODO
-<!--
 ```
 npm install age-picker
 ```
--->
 
 ## Quickstart
 
