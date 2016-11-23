@@ -1,6 +1,14 @@
 export default class DateHelper {
   constructor(nowFunction = null) {
-    this.nowFunction = nowFunction || (() => new Date());
+    this.nowFunction = nowFunction || (() => {
+      const now = new Date();
+      now.setHours(0);
+      now.setMinutes(0);
+      now.setSeconds(0);
+      now.setMilliseconds(0);
+
+      return now;
+    });
   }
 
   // Adapted from http://stackoverflow.com/a/10008120 from http://stackoverflow.com/questions/10008050/get-age-from-birthdate
@@ -9,9 +17,9 @@ export default class DateHelper {
 
     // This portion adapted from http://stackoverflow.com/a/10008120 from http://stackoverflow.com/questions/10008050/get-age-from-birthdate
     const todayDate = this.nowFunction();
-    const todayYear = todayDate.getFullYear();
-    const todayMonth = todayDate.getMonth();
-    const todayDay = todayDate.getDate();
+    const todayYear = todayDate.getUTCFullYear();
+    const todayMonth = todayDate.getUTCMonth();
+    const todayDay = todayDate.getUTCDate();
     let age = todayYear - birthYear;
 
     if (todayMonth < (birthMonth - 1)) {
