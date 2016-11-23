@@ -4,6 +4,8 @@
 
 Enhance `input` tags for collecting age information using `data-` attributes and simple wireup JavaScript.
 
+**[Try out a demo](https://ritterim.github.io/age-picker)!**
+
 ## Example
 
 ![Example](example.png)
