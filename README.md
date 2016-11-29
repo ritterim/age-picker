@@ -16,6 +16,8 @@ Enhance `input` tags for collecting age information using `data-` attributes and
 npm install age-picker
 ```
 
+Or, load this script manually: [https://unpkg.com/age-picker@latest/lib/age-picker.min.js](https://unpkg.com/age-picker@latest/lib/age-picker.min.js) -- This targets the latest version, which may include breaking changes for major version updates. A specific version can be targeted to avoid potential breaking changes. See [https://unpkg.com](https://unpkg.com) for more information.
+
 ## Quickstart
 
 ```html
