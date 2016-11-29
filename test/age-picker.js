@@ -351,7 +351,7 @@ function directInputMacro(t, dateString, expectedAge) {
 directInputMacro.title = (providedTitle, input, expected) =>
   `create should set hidden field value for date string "${input}" to age ${expected}`;
 
-const dateHelper = new DateHelper(() => new Date(2016, 1, 1));
+const dateHelper = new DateHelper();
 
 test(directInputMacro, '1/1/1999', dateHelper.calculateAge(1, 1, 1999));
 test(directInputMacro, '01/01/1999', dateHelper.calculateAge(1, 1, 1999));
