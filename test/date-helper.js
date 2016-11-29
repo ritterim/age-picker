@@ -26,6 +26,30 @@ test('calculateAge for 1/1/00', calculateAgeMacro, 0, 16);
 test('calculateAge for 1/1/99', calculateAgeMacro, 99, 17);
 test('calculateAge for 1/1/50', calculateAgeMacro, 50, 66);
 
+test('calculateAge for 7/1/2015 from 1/1/2016', t => {
+  const now = new Date(2016, 0, 1);
+
+  const result = new DateHelper(() => now).calculateAge(7, 1, 2015);
+
+  t.is(result, 0);
+});
+
+test('calculateAge for 7/1/2014 from 1/1/2016', t => {
+  const now = new Date(2016, 0, 1);
+
+  const result = new DateHelper(() => now).calculateAge(7, 1, 2014);
+
+  t.is(result, 1);
+});
+
+test('calculateAge for 7/1/2013 from 1/1/2016', t => {
+  const now = new Date(2016, 0, 1);
+
+  const result = new DateHelper(() => now).calculateAge(7, 1, 2013);
+
+  t.is(result, 2);
+});
+
 test('calculateAge for 12/31/2010 from 1/1/2016', t => {
   const now = new Date(2016, 0, 1);
 
@@ -48,6 +72,30 @@ test('calculateAge for 1/2/2011 from 1/1/2016', t => {
   const result = new DateHelper(() => now).calculateAge(1, 2, 2011);
 
   t.is(result, 4);
+});
+
+test('calculateAge for 7/1/2015 from 1/1/2016 UTC', t => {
+  const now = new Date(Date.UTC(2016, 0, 1, 0, 0, 0));
+
+  const result = new DateHelper(() => now).calculateAge(7, 1, 2015);
+
+  t.is(result, 0);
+});
+
+test('calculateAge for 7/1/2014 from 1/1/2016 UTC', t => {
+  const now = new Date(Date.UTC(2016, 0, 1, 0, 0, 0));
+
+  const result = new DateHelper(() => now).calculateAge(7, 1, 2014);
+
+  t.is(result, 1);
+});
+
+test('calculateAge for 7/1/2013 from 1/1/2016 UTC', t => {
+  const now = new Date(Date.UTC(2016, 0, 1, 0, 0, 0));
+
+  const result = new DateHelper(() => now).calculateAge(7, 1, 2013);
+
+  t.is(result, 2);
 });
 
 test('calculateAge for 12/31/2010 from 1/1/2016 UTC', t => {
