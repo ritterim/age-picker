@@ -367,6 +367,9 @@ test(directInputMacro, '1/1/02', new DateHelper().calculateAge(1, 1, 2002));
 test(directInputMacro, '7/1/1999', new DateHelper().calculateAge(7, 1, 1999));
 test(directInputMacro, '07/01/1999', new DateHelper().calculateAge(7, 1, 1999));
 
+test(directInputMacro, '7 1 1999', '7 1 1999');
+test(directInputMacro, '07 01 1999', '07 01 1999');
+
 test(directInputMacro, 'Jan 1 1999', new DateHelper().calculateAge(1, 1, 1999));
 test(directInputMacro, 'January 1 1999', new DateHelper().calculateAge(1, 1, 1999));
 test(directInputMacro, 'Feb 1 1999', new DateHelper().calculateAge(2, 1, 1999));
