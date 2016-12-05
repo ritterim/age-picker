@@ -218,6 +218,54 @@ test('getDaysInMonth should return expected value for February in leap year', t 
   t.is(result, 29);
 });
 
+test('getDaysInMonth should return expected value for March', t => {
+  const result = DateHelper.getDaysInMonth(3, nonLeapYear);
+
+  t.is(result, 31);
+});
+
+test('getDaysInMonth should return expected value for April', t => {
+  const result = DateHelper.getDaysInMonth(4, nonLeapYear);
+
+  t.is(result, 30);
+});
+
+test('getDaysInMonth should return expected value for May', t => {
+  const result = DateHelper.getDaysInMonth(5, nonLeapYear);
+
+  t.is(result, 31);
+});
+
+test('getDaysInMonth should return expected value for June', t => {
+  const result = DateHelper.getDaysInMonth(6, nonLeapYear);
+
+  t.is(result, 30);
+});
+
+test('getDaysInMonth should return expected value for July', t => {
+  const result = DateHelper.getDaysInMonth(7, nonLeapYear);
+
+  t.is(result, 31);
+});
+
+test('getDaysInMonth should return expected value for August', t => {
+  const result = DateHelper.getDaysInMonth(8, nonLeapYear);
+
+  t.is(result, 31);
+});
+
+test('getDaysInMonth should return expected value for September', t => {
+  const result = DateHelper.getDaysInMonth(9, nonLeapYear);
+
+  t.is(result, 30);
+});
+
+test('getDaysInMonth should return expected value for October', t => {
+  const result = DateHelper.getDaysInMonth(10, nonLeapYear);
+
+  t.is(result, 31);
+});
+
 test('getDaysInMonth should return expected value for November', t => {
   const result = DateHelper.getDaysInMonth(11, nonLeapYear);
 
