@@ -349,7 +349,7 @@ function directInputMacro(t, dateString, expectedAge) {
 }
 
 directInputMacro.title = (providedTitle, input, expected) =>
-  `create should set hidden field value for date string "${input}" to age ${expected}`;
+  `create should set hidden field value for date string "${input}" to ${expected}`;
 
 test(directInputMacro, '1/1/1999', new DateHelper().calculateAge(1, 1, 1999));
 test(directInputMacro, '01/01/1999', new DateHelper().calculateAge(1, 1, 1999));
@@ -366,6 +366,67 @@ test(directInputMacro, '1/1/02', new DateHelper().calculateAge(1, 1, 2002));
 
 test(directInputMacro, '7/1/1999', new DateHelper().calculateAge(7, 1, 1999));
 test(directInputMacro, '07/01/1999', new DateHelper().calculateAge(7, 1, 1999));
+
+test(directInputMacro, 'Jan 1 1999', new DateHelper().calculateAge(1, 1, 1999));
+test(directInputMacro, 'January 1 1999', new DateHelper().calculateAge(1, 1, 1999));
+test(directInputMacro, 'Feb 1 1999', new DateHelper().calculateAge(2, 1, 1999));
+test(directInputMacro, 'February 1 1999', new DateHelper().calculateAge(2, 1, 1999));
+test(directInputMacro, 'Mar 1 1999', new DateHelper().calculateAge(3, 1, 1999));
+test(directInputMacro, 'March 1 1999', new DateHelper().calculateAge(3, 1, 1999));
+test(directInputMacro, 'Apr 1 1999', new DateHelper().calculateAge(4, 1, 1999));
+test(directInputMacro, 'April 1 1999', new DateHelper().calculateAge(4, 1, 1999));
+test(directInputMacro, 'May 1 1999', new DateHelper().calculateAge(5, 1, 1999));
+test(directInputMacro, 'Jun 1 1999', new DateHelper().calculateAge(6, 1, 1999));
+test(directInputMacro, 'June 1 1999', new DateHelper().calculateAge(6, 1, 1999));
+test(directInputMacro, 'Jul 1 1999', new DateHelper().calculateAge(7, 1, 1999));
+test(directInputMacro, 'July 1 1999', new DateHelper().calculateAge(7, 1, 1999));
+test(directInputMacro, 'Aug 1 1999', new DateHelper().calculateAge(8, 1, 1999));
+test(directInputMacro, 'August 1 1999', new DateHelper().calculateAge(8, 1, 1999));
+test(directInputMacro, 'Sep 1 1999', new DateHelper().calculateAge(9, 1, 1999));
+test(directInputMacro, 'September 1 1999', new DateHelper().calculateAge(9, 1, 1999));
+test(directInputMacro, 'Oct 1 1999', new DateHelper().calculateAge(10, 1, 1999));
+test(directInputMacro, 'October 1 1999', new DateHelper().calculateAge(10, 1, 1999));
+test(directInputMacro, 'Nov 1 1999', new DateHelper().calculateAge(11, 1, 1999));
+test(directInputMacro, 'November 1 1999', new DateHelper().calculateAge(11, 1, 1999));
+test(directInputMacro, 'Dec 31 1999', new DateHelper().calculateAge(12, 31, 1999));
+test(directInputMacro, 'December 31 1999', new DateHelper().calculateAge(12, 31, 1999));
+
+test(directInputMacro, 'DEC 1 1999', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, 'DECEMBER 1 1999', new DateHelper().calculateAge(12, 1, 1999));
+
+test(directInputMacro, 'Dec1 1999', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, 'Decemb1 1999', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, 'December1 1999', new DateHelper().calculateAge(12, 1, 1999));
+
+test(directInputMacro, '1 Dec 1999', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, '01 Dec 1999', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, '1 Dec 99', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, '01 Dec 99', new DateHelper().calculateAge(12, 1, 1999));
+
+test(directInputMacro, '1999 Dec 1', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, '1999 1 Dec', new DateHelper().calculateAge(12, 1, 1999));
+
+test(directInputMacro, '00 Dec 1', new DateHelper().calculateAge(12, 1, 2000));
+test(directInputMacro, '00 1 Dec', new DateHelper().calculateAge(12, 1, 2000));
+test(directInputMacro, 'Dec 1 00', new DateHelper().calculateAge(12, 1, 2000));
+test(directInputMacro, 'Dec 1 00', new DateHelper().calculateAge(12, 1, 2000));
+
+test(directInputMacro, 'Dec 1 30', new DateHelper().calculateAge(12, 1, 1930));
+test(directInputMacro, '1 Dec 30', new DateHelper().calculateAge(12, 1, 1930));
+
+test(directInputMacro, 'Dec 10 30', new DateHelper().calculateAge(12, 10, 1930));
+test(directInputMacro, '10 Dec 30', new DateHelper().calculateAge(12, 10, 1930));
+
+test(directInputMacro, 'Dec 1 01', new DateHelper().calculateAge(12, 1, 2001));
+test(directInputMacro, '1 Dec 01', new DateHelper().calculateAge(12, 1, 2001));
+
+test(directInputMacro, '1-Dec-1999', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, '01-Dec-1999', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, '1-Dec-99', new DateHelper().calculateAge(12, 1, 1999));
+test(directInputMacro, '01-Dec-99', new DateHelper().calculateAge(12, 1, 1999));
+
+test(directInputMacro, 'December 1', 'December 1');
+test(directInputMacro, 'Dec 1', 'Dec 1');
 
 test('create should set hidden field value when year, month, and day specified', t => {
   const element = addElement();

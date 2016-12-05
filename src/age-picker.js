@@ -234,25 +234,53 @@ export default class AgePicker {
   }
 
   _parseDate(val) {
-    if (/\d{1,4}(\/|-)\d{1,2}(\/|-)\d{1,4}/.test(val)) {
-      const split = val.split(/(\/|-)/);
-      const splitYearPosition = 4;
+    if (!val) {
+      return null;
+    }
 
-      // Use a four digit year exactly.
-      // For a two digit year use a year based on today's date.
-      const year = split.some(x => x >= 1000)
-        ? split.filter(x => parseInt(x, 10) >= 1000)[0]
-        : this.dateHelper.getBirthYearForUserProvidedValue(parseInt(split[splitYearPosition], 10));
+    let splitPattern = /(\/|-)/;
+    let splitYearPosition;
 
-      // Remove leading zeros for consistent `new Date('string_value')` parsing.
-      const valDate = new Date(val.replace(/0(\d{1})/, '$1'));
+    // The default configuration for this.configuration.i18n.months
+    // works with 3 or more matching letters. For other
+    // this.configuration.i18n.months values this may or may not work.
+    const abbreviatedMonths = this.configuration.i18n.months.map(x => x.substr(0, 3));
 
-      const date = new Date(year, valDate.getMonth(), valDate.getDate());
+    // If `val` contains at least an abbreviation of a month
+    // (which includes specifying the unabbreviated month)
+    // as well as year and day numbers arranged in a potentially parseable manner,
+    // try parsing the date.
+    if (abbreviatedMonths.some(x => val.toUpperCase().includes(x.toUpperCase()))) {
+      splitPattern = /(\/|-| )/;
 
-      if (isNaN(date)) {
-        return null;
+      if (/\d{1,2}[A-Za-z\s\-]+(\d{2}|\d{4})/.test(val)) { // 1 December 1999
+        splitYearPosition = 4;
       }
+      else if (/(\d{2}|\d{4})[A-Za-z\s\-]+\d{1,2}/.test(val)) { // 99 December 1
+        splitYearPosition = 0;
+      }
+    }
+    else if (/\d{1,4}(\/|-)\d{1,2}(\/|-)\d{1,4}/.test(val)) {
+      splitYearPosition = 4;
+    }
+    else {
+      return null;
+    }
 
+    const split = val.split(splitPattern);
+
+    // Use a four digit year exactly.
+    // For a two digit year use a year based on today's date.
+    const year = split.some(x => x >= 1000)
+      ? split.filter(x => parseInt(x, 10) >= 1000)[0]
+      : this.dateHelper.getBirthYearForUserProvidedValue(parseInt(split[splitYearPosition], 10));
+
+    // Remove leading zeros for consistent `new Date('string_value')` parsing.
+    const valDate = new Date(val.replace(/0(\d{1})/, '$1'));
+
+    const date = new Date(year, valDate.getMonth(), valDate.getDate());
+
+    if (!isNaN(date)) {
       return date;
     }
 
