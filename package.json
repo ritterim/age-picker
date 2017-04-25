@@ -18,13 +18,11 @@
   "scripts": {
     "audit": "nsp check package",
     "build": "webpack -d",
-    "check": "npm run audit && npm outdated --depth 0",
     "coverage": "jest --coverage",
     "lint": "eslint src tests",
     "test": "jest",
     "test:watch": "jest --watch",
     "validate": "npm run lint && npm test",
-    "prepare": "npm run build && npm run validate && npm run check",
     "watch": "webpack -d --watch"
   },
   "author": {
