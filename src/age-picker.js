@@ -253,10 +253,10 @@ export default class AgePicker {
     if (abbreviatedMonths.some(x => val.toUpperCase().includes(x.toUpperCase()))) {
       splitPattern = /(\/|-| )/;
 
-      if (/\d{1,2}[A-Za-z\s\-]+(\d{2}|\d{4})/.test(val)) { // 1 December 1999
+      if (/\d{1,2}[A-Za-z\s-]+(\d{2}|\d{4})/.test(val)) { // 1 December 1999
         splitYearPosition = 4;
       }
-      else if (/(\d{2}|\d{4})[A-Za-z\s\-]+\d{1,2}/.test(val)) { // 99 December 1
+      else if (/(\d{2}|\d{4})[A-Za-z\s-]+\d{1,2}/.test(val)) { // 99 December 1
         splitYearPosition = 0;
       }
     }

@@ -12,9 +12,6 @@ if %ERRORLEVEL% neq 0 goto BuildFail
 call npm run validate
 if %ERRORLEVEL% neq 0 goto BuildFail
 
-call npm run audit
-if %ERRORLEVEL% neq 0 goto BuildFail
-
 call npm pack
 if %ERRORLEVEL% neq 0 goto BuildFail
 
