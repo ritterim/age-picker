@@ -15,10 +15,32 @@ function addElement(value) {
   return element;
 }
 
+function addElementUseDate(value) {
+  const element = document.createElement('input');
+  element.value = value;
+  element.setAttribute('data-age-picker', true);
+  element.setAttribute('data-age-picker-use-date', true);
+
+  document.body.appendChild(element);
+
+  return element;
+}
+
 function addDirectEntryOnlyElement(value) {
   const directEntryOnlyElement = document.createElement('input');
   directEntryOnlyElement.value = value;
   directEntryOnlyElement.setAttribute('data-age-picker-direct-entry-only', true);
+
+  document.body.appendChild(directEntryOnlyElement);
+
+  return directEntryOnlyElement;
+}
+
+function addDirectEntryOnlyElementUseDate(value) {
+  const directEntryOnlyElement = document.createElement('input');
+  directEntryOnlyElement.value = value;
+  directEntryOnlyElement.setAttribute('data-age-picker-direct-entry-only', true);
+  directEntryOnlyElement.setAttribute('data-age-picker-use-date', true);
 
   document.body.appendChild(directEntryOnlyElement);
 
@@ -46,6 +68,16 @@ test('constructor should apply defaults with provided configuration', () => {
 test('constructor should throw error when configuration dataAttribute does not start with "data-"', () => {
   expect(() => new AgePicker({ dataAttribute: 'test' }))
     .toThrowError('configuration dataAttribute must start with "data-".');
+});
+
+test('constructor should throw error when configuration directEntryOnlyDataAttribute does not start with "data-"', () => {
+  expect(() => new AgePicker({ directEntryOnlyDataAttribute: 'test' }))
+    .toThrowError('configuration directEntryOnlyDataAttribute must start with "data-".');
+});
+
+test('constructor should throw error when configuration useDateAttribute does not start with "data-"', () => {
+  expect(() => new AgePicker({ useDateAttribute: 'test' }))
+    .toThrowError('configuration useDateAttribute must start with "data-".');
 });
 
 test('init should default to document.body', () => {
@@ -321,6 +353,32 @@ test('create direct entry only should set hidden field value for date string val
   const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
 
   expect(hiddenInput.value).toBe('5');
+});
+
+test('create should set hidden field value to date when useDateAttribute is provided', () => {
+  const element = addElementUseDate();
+
+  new AgePicker().create(element);
+
+  element.value = '1/1/1990';
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  expect(hiddenInput.value).toBe('1/1/1990');
+});
+
+test('create direct entry only should set hidden field value to date when useDateAttribute is provided', () => {
+  const element = addDirectEntryOnlyElementUseDate();
+
+  new AgePicker().create(element);
+
+  element.value = '1/1/1990';
+  element.dispatchEvent(new window.Event('keyup'));
+
+  const hiddenInput = document.body.querySelector('.age-picker-container input[type="hidden"]');
+
+  expect(hiddenInput.value).toBe('1/1/1990');
 });
 
 function directInputMacro(dateString, expectedAge) {
