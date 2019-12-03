@@ -52,6 +52,7 @@ new AgePicker({
 | `defaultDomScope`              | The default DOM scope to scan for `dataAttribute` items.                  | `document.body` |
 | `dataAttribute`                | The `data-` attribute to scan for.                                        | `'data-age-picker'` |
 | `directEntryOnlyDataAttribute` | The `data-` attribute to scan for supporting direct entry only.           | `'data-age-picker-direct-entry-only'` |
+| `useDateAttribute`             | The `data-` attribute to transmit the date, rather than the age.          | `'data-age-picker-use-date'` |
 | `prefixClass`                  | The prefix for CSS classes used by other configuration CSS classes.       | `'age-picker'` |
 | `containerClass`               | The container class surrouding the age picker and all related DOM assets. | ``${this.configuration.prefixClass}-container`` |
 | `monthSelectClass`             | The `select` tag to select the month.                                     | ``${this.configuration.prefixClass}-month`` |

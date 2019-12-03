@@ -11,9 +11,19 @@ var ids = [
     result: 'result'
   },
   {
+    elementId: 'age-use-date',
+    ageValue: 'age-use-date-value',
+    result: 'result-use-date'
+  },
+  {
     elementId: 'direct-entry-only-age',
     ageValue: 'direct-entry-only-age-value',
     result: 'direct-entry-only-result'
+  },
+  {
+    elementId: 'direct-entry-only-age-use-date',
+    ageValue: 'direct-entry-only-age-use-date-value',
+    result: 'direct-entry-only-result-use-date'
   }
 ];
 

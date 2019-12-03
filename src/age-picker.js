@@ -6,6 +6,7 @@ export default class AgePicker {
       defaultDomScope: document.body,
       dataAttribute: 'data-age-picker',
       directEntryOnlyDataAttribute: 'data-age-picker-direct-entry-only',
+      useDateAttribute: 'data-age-picker-use-date',
       prefixClass: 'age-picker',
       selectClasses: [],
       i18n: {
@@ -25,6 +26,14 @@ export default class AgePicker {
 
     if (!this.configuration.dataAttribute.startsWith('data-')) {
       throw new Error('configuration dataAttribute must start with "data-".');
+    }
+
+    if (!this.configuration.directEntryOnlyDataAttribute.startsWith('data-')) {
+      throw new Error('configuration directEntryOnlyDataAttribute must start with "data-".');
+    }
+
+    if (!this.configuration.useDateAttribute.startsWith('data-')) {
+      throw new Error('configuration useDateAttribute must start with "data-".');
     }
 
     this.dateHelper = new DateHelper();
@@ -124,15 +133,23 @@ export default class AgePicker {
     const parsedDate = this._parseDate(element.value);
 
     if (parsedDate) {
-      hiddenElement.value = this.dateHelper.calculateAge(
-        parsedDate.getMonth() + 1, parsedDate.getDate(), parsedDate.getFullYear());
+      if (element.hasAttribute(this.configuration.useDateAttribute)) {
+        hiddenElement.value = `${parsedDate.getMonth() + 1}/${parsedDate.getDate()}/${parsedDate.getFullYear()}`;
+      } else {
+        hiddenElement.value = this.dateHelper.calculateAge(
+          parsedDate.getMonth() + 1, parsedDate.getDate(), parsedDate.getFullYear());
+        }
     } else if (element.hasAttribute(this.configuration.dataAttribute) && /^\s*\d{4}\s*$/.test(element.value)) {
       const year = element.value.trim();
       const month = monthSelect.options[monthSelect.selectedIndex].value; // 1-12
       const day = daySelect.options[daySelect.selectedIndex].value; // 1-31
 
       if (month && day) {
-        hiddenElement.value = this.dateHelper.calculateAge(month, day, year);
+        if (element.hasAttribute(this.configuration.useDateAttribute)) {
+          hiddenElement.value = `${month}/${day}/${year}`;
+        } else {
+          hiddenElement.value = this.dateHelper.calculateAge(month, day, year);
+        }
       } else {
         hiddenElement.value = '';
       }

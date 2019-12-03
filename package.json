@@ -1,6 +1,6 @@
 {
   "name": "age-picker",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Enhance `input` tags for collecting age information using `data-` attributes and simple wireup JavaScript.",
   "bin": "lib/age-picker.min.js",
   "files": [
